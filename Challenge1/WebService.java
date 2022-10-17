@@ -1,9 +1,11 @@
+package Challenge1;
+
 import java.io.InputStreamReader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.URL;
 
-class Main {
+class WebService {
   public static void main(String[] args) throws IOException {
     //This allows for input using arguments or readline, felt like learning how that worked ¯\_(ツ)_/¯.
     String emailID;
@@ -17,7 +19,7 @@ class Main {
 
     //Make a URL object using the users input.
     URL webPage = new URL("https://www.ecs.soton.ac.uk/people/" + emailID);
-    
+
     //Create a reader object
     BufferedReader webReader = new BufferedReader(new InputStreamReader(webPage.openStream()));
     boolean flag = true;
@@ -31,8 +33,8 @@ class Main {
         //Check if the current line contains "name": and does not contain Southampton (some name property's are that of the University).
         if (currentString.toLowerCase().indexOf("\"name\": \"") != -1 & currentString.indexOf("Southampton") == -1) {
           //Print out the name and mark the name as found.
-          System.out.println(currentString.substring(21, currentString.lastIndexOf("\"")));    
-          flag = true;      
+          System.out.println(currentString.substring(21, currentString.lastIndexOf("\"")));
+          flag = true;
         }
       }
     }
