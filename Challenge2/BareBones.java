@@ -72,10 +72,18 @@ public class BareBones {
           //Check if conditions met
           if (memory.get(code[pointer][1]) == Integer.parseInt(code[pointer][3])) {
             //If they are go to line after the next end (skip past the code in the while)
+            //Changed to allow for handling of nested while loops
+            int whileCount = 0;
             for (int searchLine = pointer; searchLine < code.length; searchLine++) {
-              if (code[searchLine][0].contains("end")) {
-                pointer = searchLine;
-                break;
+              if (code[searchLine][0].contains("while")) {
+                whileCount++;
+              } else if (code[searchLine][0].contains("end")) {
+                whileCount--;
+                if (whileCount == 0) {
+                  pointer = searchLine;
+                  break;
+                }
+
               }
             }
           } else {
