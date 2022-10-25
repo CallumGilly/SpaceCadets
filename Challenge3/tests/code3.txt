@@ -1,0 +1,18 @@
+clear var1;
+incr var1;
+incr var1;
+incr var1;
+incr var1;
+clear var2;
+incr var2;
+incr var2;
+incr var2;
+incr var2;
+incr var2;
+incr var2;
+incr var2;
+incr var2;
+sum = var1 + var2;
+sub = var2 - var1;
+negSub = var1 - var2;
+multi - var1 * var2;
