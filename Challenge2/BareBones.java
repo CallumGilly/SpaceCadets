@@ -16,6 +16,7 @@ public class BareBones {
     runtime.runCode();
   }
 
+  //This function asks the user to input the file name and reads it into a 2D array [line,instruction segment]
   private void setupCodebase() throws IOException {
     //Gets the path from the user
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
@@ -83,7 +84,6 @@ public class BareBones {
                   pointer = searchLine;
                   break;
                 }
-
               }
             }
           } else {
