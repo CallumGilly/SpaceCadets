@@ -55,7 +55,7 @@ public class Memory {
     return varTable.get(varName);
   }
 
-  private void dump() {
+  public void dump() {
     System.out.println(varTable.toString());
   }
 }

@@ -47,7 +47,7 @@ public class BareBones {
   private int getMatchingEnd(int currentPos) {
     // A section is started on commands such as whiles and is ended with while statements
     int sectionCount = 0;
-    Pattern sectionStarter = Pattern.compile("while",Pattern.CASE_INSENSITIVE);
+    Pattern sectionStarter = Pattern.compile("while|if",Pattern.CASE_INSENSITIVE);
     Pattern sectionEnder = Pattern.compile("end", Pattern.CASE_INSENSITIVE);
 
     for (int searchLine = currentPos; searchLine < code.size(); searchLine++) {
@@ -63,6 +63,7 @@ public class BareBones {
     return -1;
   }
 
+
   private int handleWhile(int pointer, Memory memory, Stack<Integer> callStack) {
     //Check if conditions met
     if (memory.get(code.get(pointer)[1]) == Integer.parseInt(code.get(pointer)[3])) {
@@ -76,21 +77,34 @@ public class BareBones {
     return pointer;
   }
 
+  private String[] processLine(String[] line, Memory memory, ALU calculator) {
+    for (int ai = 0; ai < line.length; ai++) {
+      if (line[ai].charAt(0) == '=' && line[ai].charAt(1) != '=') {
+        line[ai] = calculator.processMaths(line[ai], memory);
+      }
+    }
+    return line;
+  }
+
   private void runCode() {
     int pointer = 0;    //Current line
     Memory memory = new Memory(); //Variable store
     Stack<Integer> callStack= new Stack(); //Loop stack - hold where to jump to when an end is reached;
+    boolean echo = true;
     ALU calculator = new ALU();
     while (pointer < code.size()) {
-      switch (code.get(pointer)[0]) {
+      //Calculate maths
+      String[] processedLine = processLine(code.get(pointer),memory, calculator);
+      //Handle instruction
+      switch (processedLine[0]) {
         case "clear" -> {
-          memory.clr(code.get(pointer)[1]);
+          memory.clr(processedLine[1], echo);
         }
         case "incr" -> {
-          memory.incr(code.get(pointer)[1]);
+          memory.incr(processedLine[1], echo);
         }
         case "decr" -> {
-          memory.decr(code.get(pointer)[1]);
+          memory.decr(processedLine[1], echo);
         }
         case "while"  -> {
           pointer = handleWhile(pointer, memory, callStack);
@@ -100,21 +114,71 @@ public class BareBones {
         }
         case "end" -> {
           if (!(callStack.empty())) {
-            pointer = callStack.pop() - 1;
+            int newPoint = callStack.pop();
+            if (newPoint >= 0) {
+              pointer = newPoint - 1;
+            }
+          }
+        }
+        case "set" -> {
+          if (processedLine[2].charAt(0) == '#') {
+            memory.set(processedLine[1],Integer.parseInt(processedLine[2].substring(1)), echo);
+          } else {
+            System.out.println(processedLine[2]);
+            memory.set(processedLine[1],memory.get(processedLine[2]), echo);
+          }
+        }
+        case "//" -> {
+          //Code is a comment, do nothing
+        }
+        case "echo" -> {
+          if (processedLine[1].equals("0") || processedLine[1].equals("off")) {
+            echo = false;
+          } else {
+            echo = true;
+          }
+        }
+        case "input" -> {
+          int input = -1;
+          while (input < 0) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+            try {
+              input = Integer.parseInt(reader.readLine());
+            } catch (Exception ex) {
+              input = -1;
+            }
+            if (input < 0) {
+              System.out.println("Invalid number, try again");
+            }
+          }
+          memory.set(processedLine[1], input, echo);
+        }
+        case "output" -> {
+          for (int ai = 1; ai < processedLine.length; ai++) {
+            System.out.print(processedLine[ai] + " ");
+          }
+          System.out.println();
+        }
+        case "if" -> {
+          if (calculator.evaluateIf(processedLine,memory) == false) {
+            //If is false
+            int matchingEnd = getMatchingEnd(pointer);
+            if (matchingEnd != -1) {
+              pointer = matchingEnd;
+            }
+          } else {
+            callStack.push(-1);
           }
         }
         default -> {
-          switch (code.get(pointer)[1]) {
-            case "=" -> {
-              calculator.calculateSet(code.get(pointer), memory);
-            }default -> {
-              System.out.println("Unknown Command found, skipping: " + code.get(pointer).toString());
-            }
-          }
+          System.out.println("Unknown Command found, skipping: " + processedLine.toString());
         }
       }
       //Once a line has been dealt with move onto the next line
       pointer++;
     }
+    //Print final state:
+    System.out.println("Final state:");
+    memory.dump();
   }
 }

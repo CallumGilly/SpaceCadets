@@ -1,0 +1,9 @@
+echo off;
+output enter a number;
+input userInput;
+if userInput == #4 then;
+    output the input is 4;
+end;
+if userInput != #4 then;
+    output the input is not 4;
+end;

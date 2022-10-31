@@ -1,0 +1,4 @@
+echo off;
+output Enter a number;
+input var1;
+output var1 is equal to =var1;
