@@ -3,7 +3,7 @@ output enter a number;
 input userInput;
 if userInput == #4 then;
     output the input is 4;
-end;
+end; rem This is a comment;
 if userInput != #4 then;
     output the input is not 4;
 end;

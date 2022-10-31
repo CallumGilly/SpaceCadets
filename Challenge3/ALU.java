@@ -15,7 +15,8 @@ public class ALU {
         //Here we have a direct number
         stack.push(Integer.parseInt(math[ai].substring(1)));
       } else if (operation.matcher(math[ai]).matches()) {
-        //Here we have an operation
+        //Here we have an operation so should get the last two values from the stack and use the
+        //operation on them before pushing it to the stack again
         int num2 = stack.pop();
         int num1 = stack.pop();
         switch (math[ai]) {
@@ -39,7 +40,7 @@ public class ALU {
           }
         }
       } else {
-        //Here we have a memory reference
+        //Here we have a memory reference so get the value from memory
         stack.push(memory.get(math[ai]));
       }
     }
