@@ -50,6 +50,7 @@ public class BareBones {
     Pattern sectionStarter = Pattern.compile("while|if",Pattern.CASE_INSENSITIVE);
     Pattern sectionEnder = Pattern.compile("end", Pattern.CASE_INSENSITIVE);
 
+    //Searches for the next end which does not have a while or an if beforehand
     for (int searchLine = currentPos; searchLine < code.size(); searchLine++) {
       if (sectionStarter.matcher(code.get(searchLine)[0]).find()) {
         sectionCount++;
@@ -128,10 +129,11 @@ public class BareBones {
             memory.set(processedLine[1],memory.get(processedLine[2]), echo);
           }
         }
-        case "//" -> {
+        case "rem" -> {
           //Code is a comment, do nothing
         }
         case "echo" -> {
+          //Dictates whether current memory should be output each line
           if (processedLine[1].equals("0") || processedLine[1].equals("off")) {
             echo = false;
           } else {
@@ -140,11 +142,13 @@ public class BareBones {
         }
         case "input" -> {
           int input = -1;
+          //While loop validates that input is an integer and is a positive integer
           while (input < 0) {
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             try {
               input = Integer.parseInt(reader.readLine());
             } catch (Exception ex) {
+              //A value of -1 will make the while loop run again
               input = -1;
             }
             if (input < 0) {
@@ -154,6 +158,7 @@ public class BareBones {
           memory.set(processedLine[1], input, echo);
         }
         case "output" -> {
+          //Outputs the rest of the line to console
           for (int ai = 1; ai < processedLine.length; ai++) {
             System.out.print(processedLine[ai] + " ");
           }
@@ -161,12 +166,13 @@ public class BareBones {
         }
         case "if" -> {
           if (calculator.evaluateIf(processedLine,memory) == false) {
-            //If is false
+            //If is false and should be skipped
             int matchingEnd = getMatchingEnd(pointer);
             if (matchingEnd != -1) {
               pointer = matchingEnd;
             }
           } else {
+            //If is true, push to the call stack so that while loops aren't messed up when the next end is reached
             callStack.push(-1);
           }
         }
