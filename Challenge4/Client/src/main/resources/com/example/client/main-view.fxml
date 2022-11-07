@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.client.ClientController">
+   <children>
+      <TextField id="msgBox" fx:id="msgBox" layoutX="14.0" layoutY="441.0" onAction="#send" prefHeight="25.0" prefWidth="564.0" promptText="Enter you message here" disable="true" />
+      <Button id="sentBtn" fx:id="sentBtn" layoutX="583.0" layoutY="441.0" mnemonicParsing="false" onAction="#send" text="Send" disable="true"/>
+      <TabPane id="tabGroup" layoutY="30.0" prefHeight="403.0" prefWidth="640.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab id="default" onSelectionChanged="#setCurrentRoom" text="Main Room">
+               <content>
+                  <TextArea id="chatBox" fx:id="chatBox" prefHeight="200.0" prefWidth="200.0" />
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+      <Button id="toggleConnectButton" layoutX="574.0" layoutY="2.0" mnemonicParsing="false" onAction="#toggleConnect" text="Connect" />
+      <Label layoutX="14.0" layoutY="6.0" text="Sever Address" />
+      <TextField id="addressInput" fx:id="addressInput" layoutX="99.0" layoutY="2.0" text="localhost:7070" />
+      <TextField id="usernameInput" fx:id="usernameInput" layoutX="320.0" layoutY="2.0" text="user1" />
+      <Label layoutX="255.0" layoutY="6.0" text="Username:" />
+   </children>
+</Pane>
