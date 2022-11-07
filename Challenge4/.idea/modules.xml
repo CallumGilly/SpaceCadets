@@ -5,8 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/Challenge4.iml" filepath="$PROJECT_DIR$/.idea/Challenge4.iml" />
       <module fileurl="file://$PROJECT_DIR$/Client/Client.iml" filepath="$PROJECT_DIR$/Client/Client.iml" />
       <module fileurl="file://$PROJECT_DIR$/ServerV2/ServerV2.iml" filepath="$PROJECT_DIR$/ServerV2/ServerV2.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Sever/Sever.iml" filepath="$PROJECT_DIR$/Sever/Sever.iml" />
-      <module fileurl="file://$PROJECT_DIR$/SimpleSever/SimpleSever.iml" filepath="$PROJECT_DIR$/SimpleSever/SimpleSever.iml" />
     </modules>
   </component>
 </project>
